@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>Newsletter-FIX</name>
+    <code>Newsletters-FIX</code>
+    <version>1.0</version>
+    <author>invays</author>
+    <link>https://opencartmodul.ru</link>
+ 
+ <!-- Fix for extension: https://www.opencart.com/index.php?route=marketplace/extension/info&extension_id=31364&filter_search=newsletter&filter_license=0&page=3 -->
+ <!-- DATE: 05.04.2020  -->
+
+ <file path="admin/model/marketing/newsletter.php">
+  <operation error="log">
+   <search><![CDATA[$query = $this->db->query("SELECT news_email FROM " . DB_PREFIX . "newsletter WHERE news_email = '" . $newsletter_email . "'");]]></search>
+   <add position="replace"><![CDATA[$query = $this->db->query("SELECT news_email FROM " . DB_PREFIX . "newsletter WHERE news_email = '" . $this->db->escape($newsletter_email) . "'");]]></add>
+  </operation>
+ </file>
+
+ <file path="admin/model/marketing/affiliate.php">
+    <operation error="log">
+        <search><![CDATA[$query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "affiliate_login` WHERE `email` = '" . $this->db->escape($email) . "'");]]></search>
+        <add position="replace"><![CDATA[$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "affiliate_login` WHERE `email` = '" . $this->db->escape($email) . "'");]]></add>
+    </operation>
+    <operation error="log">
+        <search><![CDATA[$this->db->query("DELETE FROM `" . DB_PREFIX . "affiliate_login` WHERE `email` = '" . $this->db->escape($email) . "'");]]></search>
+        <add position="replace"><![CDATA[$this->db->query("DELETE FROM " . DB_PREFIX . "affiliate_login` WHERE `email` = '" . $this->db->escape($email) . "'");]]></add>
+    </operation>
+ </file>
+ 
+ <!-- Request from frontend, where we can found vulnerability to sql-injection --> <!-- English -->
+ <!-- Запрос из пользовательской части, где мы можем найти уязвимость к sql-инъекции --> <!-- Russian -->
+ <file path="catalog/model/extension/module/newsletter.php">
+    <operation error="log">
+        <search><![CDATA[$res = $this->db->query("select * from ". DB_PREFIX ."newsletter where news_email='".$data['email']."'");]]></search>
+        <add position="replace"><![CDATA[$res = $this->db->query("select * from ". DB_PREFIX ."newsletter where news_email='". $this->db->escape($data['email']) ."'");]]></add>
+    </operation>
+    <operation error="log">
+        <search><![CDATA[if($this->db->query("INSERT INTO " . DB_PREFIX . "newsletter (news_email, subscribe_date) values ('".$data['email']."', NOW())"))]]></search>
+        <add position="replace"><![CDATA[if($this->db->query("INSERT INTO " . DB_PREFIX . "newsletter (news_email, subscribe_date) values ('". $this->db->escape($data['email']) ."', NOW())"))]]></add>
+    </operation>
+ </file>
+
+</modification>
