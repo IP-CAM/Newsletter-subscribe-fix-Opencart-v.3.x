@@ -15,17 +15,6 @@
    <add position="replace"><![CDATA[$query = $this->db->query("SELECT news_email FROM " . DB_PREFIX . "newsletter WHERE news_email = '" . $this->db->escape($newsletter_email) . "'");]]></add>
   </operation>
  </file>
-
- <file path="admin/model/marketing/affiliate.php">
-    <operation error="log">
-        <search><![CDATA[$query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "affiliate_login` WHERE `email` = '" . $this->db->escape($email) . "'");]]></search>
-        <add position="replace"><![CDATA[$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "affiliate_login` WHERE `email` = '" . $this->db->escape($email) . "'");]]></add>
-    </operation>
-    <operation error="log">
-        <search><![CDATA[$this->db->query("DELETE FROM `" . DB_PREFIX . "affiliate_login` WHERE `email` = '" . $this->db->escape($email) . "'");]]></search>
-        <add position="replace"><![CDATA[$this->db->query("DELETE FROM " . DB_PREFIX . "affiliate_login` WHERE `email` = '" . $this->db->escape($email) . "'");]]></add>
-    </operation>
- </file>
  
  <!-- Request from frontend, where we can found vulnerability to sql-injection --> <!-- English -->
  <!-- Запрос из пользовательской части, где мы можем найти уязвимость к sql-инъекции --> <!-- Russian -->
